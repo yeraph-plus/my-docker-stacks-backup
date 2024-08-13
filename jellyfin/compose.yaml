@@ -1,0 +1,29 @@
+# FROM https://jellyfin.org/
+# FROM https://hub.docker.com/r/linuxserver/jellyfin
+version: "3.8"
+services:
+  jellyfin:
+    container_name: jellyfin
+    image: linuxserver/jellyfin:latest
+    restart: unless-stopped
+    ports:
+      - ${JELLYFIN_APP_PORT}:8096
+      - ${JELLYFIN_APP_PORT_HTTPS}:8920
+      - 7359:7359/udp #LOCAL PORT
+      - 1900:1900/udp #DLNA PORT
+    volumes:
+      - ./data/config:/config
+      - ${JELLYFIN_TVSERIES_DIR}:/data/tvshows
+      - ${JELLYFIN_MOVIES_DIR}:/data/movies
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      # - JELLYFIN_PublishedServerUrl=${JELLYFIN_SERVER_URL}
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

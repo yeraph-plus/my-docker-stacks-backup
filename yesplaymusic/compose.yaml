@@ -1,0 +1,16 @@
+# FROM https://github.com/qier222/YesPlayMusic
+version: "3.8"
+services:
+  yesplaymusic:
+    container_name: yes-play-music
+    image: fogforest/yesplaymusic
+    restart: unless-stopped
+    ports:
+      - ${YESMUSIC_APP_PORT}:80
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

@@ -1,0 +1,16 @@
+# FROM https://github.com/corentinth/it-tools
+version: "3.8"
+services:
+  it-tools:
+    container_name: it-tools
+    image: ghcr.io/corentinth/it-tools:latest
+    restart: unless-stopped
+    ports:
+      - ${ITTOOLS_APP_PORT}:80
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

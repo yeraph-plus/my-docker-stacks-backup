@@ -1,0 +1,26 @@
+# FROM https://calibre-ebook.com/
+# FROM https://hub.docker.com/r/linuxserver/calibre-web
+version: "3.8"
+services:
+  calibre-web:
+    container_name: calibre-web
+    image: linuxserver/calibre-web:latest
+    restart: unless-stopped
+    ports:
+      - ${CALIBRE_API_PORT}:3000
+    volumes:
+      - ./data/config:/config
+      - ${CALIBRE_BOOK_DIR}:/books
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
+      - OAUTHLIB_RELAX_TOKEN_SCOPE=1
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

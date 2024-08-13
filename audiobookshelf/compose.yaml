@@ -1,0 +1,23 @@
+# FROM https://www.audiobookshelf.org/docs
+version: "3.8"
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    image: advplyr/audiobookshelf:latest
+    restart: unless-stopped
+    ports:
+      - ${AUDIOBOOK_APP_PORT}:80
+    volumes:
+      - ./data/config:/config
+      - ./data/metadata:/metadata
+      - ${AUDIOBOOK_BOOK_DIR}:/audiobooks
+      - ${AUDIOBOOK_PODCASTS_DIR}:/podcasts
+    environment:
+      - TZ=Asia/Shanghai
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

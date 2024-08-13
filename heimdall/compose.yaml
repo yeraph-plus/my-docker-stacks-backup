@@ -1,0 +1,23 @@
+# FROM https://hub.docker.com/r/linuxserver/heimdall
+version: "3.8"
+services:
+  heimdall:
+    container_name: heimdall
+    image: linuxserver/heimdall:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+      #- 443:443
+    volumes:
+      - ./data/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

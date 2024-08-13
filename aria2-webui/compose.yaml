@@ -1,0 +1,28 @@
+# FROM https://hub.docker.com/r/hurlenko/aria2-ariang
+version: "3.8"
+services:
+  aria2-ng:
+    container_name: aria2-ng
+    image: hurlenko/aria2-ariang:latest
+    restart: unless-stopped
+    ports:
+      - ${ARIA2_APP_PORT}:8080
+      - ${ARIA2_RPC_PORT}:${ARIA2_RPC_PORT}
+      - ${ARIA2_TORRENTING_PORT}:${ARIA2_TORRENTING_PORT}
+      - ${ARIA2_TORRENTING_PORT}:${ARIA2_TORRENTING_PORT}/udp
+    volumes:
+      - ./data/conf:/aria2/conf
+      - ${ARIA2_DOWNLOAD_DIR}:/aria2/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      - RPC_SECRET=${ARIA2_RPC_SECRET}
+      - ARIA2RPCPORT=${ARIA2_RPC_PORT}
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

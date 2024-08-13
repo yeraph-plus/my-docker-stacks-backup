@@ -1,0 +1,23 @@
+# FROM https://alist.nn.ci/
+version: "3.8"
+services:
+  alist:
+    container_name: alist
+    image: xhofe/alist:latest
+    restart: unless-stopped
+    ports:
+      - ${ALIST_APP_PORT}:5244
+    volumes:
+      - ./data:/opt/alist/data
+      - ./mnt/data:/mnt/data
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=022
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

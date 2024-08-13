@@ -1,0 +1,18 @@
+# FROM https://github.com/usememos/memos
+version: "3.8"
+services:
+  memos:
+    container_name: memos
+    image: neosmemo/memos:latest
+    restart: unless-stopped
+    ports:
+      - ${MEMOS_APP_PORT}:5230
+    volumes:
+      - ./data/memos:/var/opt/memos
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

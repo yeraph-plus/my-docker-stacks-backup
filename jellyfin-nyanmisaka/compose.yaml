@@ -1,0 +1,30 @@
+# FROM https://jellyfin.org/
+# FROM https://hub.docker.com/r/nyanmisaka/jellyfin
+version: "3"
+services:
+  jellyfin:
+    container_name: jellyfin
+    image: nyanmisaka/jellyfin:latest
+    restart: unless-stopped
+    ports:
+      - ${JELLYFIN_APP_PORT}:8096
+      - ${JELLYFIN_APP_PORT_HTTPS}:8920
+      - 7359:7359/udp #LOCAL PORT
+      - 1900:1900/udp #DLNA PORT
+    extra_hosts:
+      - api.themoviedb.org:13.35.67.86
+      - image.themoviedb.org:104.16.61.155
+      - www.themoviedb.org:54.192.151.79
+      - api.thetvdb.com:13.224.157.34
+    volumes:
+      - ./data/config:/config
+      - ./data/cache:/cache
+      - ${JELLYFIN_MEDIA_DIR}:/media
+    # devices: /dev/dri/renderD128:/dev/dri/renderD128
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

@@ -1,0 +1,25 @@
+# FROM https://www.navidrome.org/docs/installation/docker/
+version: "3.8"
+services:
+  navidrome:
+    container_name: navidrome
+    image: deluan/navidrome:latest
+    restart: unless-stopped
+    user: 1000:1000
+    ports:
+      - ${NAVIDROME_APP_PORT}:4533
+    volumes:
+      - ./data:/data
+      - ${NAVIDROME_MUSIC_DIR}:/music:ro
+    environment:
+      ND_SCANSCHEDULE: 4h
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: 24h
+      ND_BASEURL: ""
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

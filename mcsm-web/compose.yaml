@@ -1,0 +1,18 @@
+# FROM https://github.com/AlisaAkiron/mcsmanager-image
+version: "3"
+services:
+  mcsm-web:
+    container_name: mcsmanager-web
+    image: alisaqaq/mcsmanager-web:latest
+    restart: unless-stopped
+    ports:
+      - 23333:23333
+    volumes:
+      - ./data:/opt/mcsmanager/web/data
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

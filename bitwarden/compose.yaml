@@ -1,0 +1,19 @@
+# FROM https://bitwarden.com/
+# FROM https://github.com/dani-garcia/vaultwarden
+version: "3.8"
+services:
+  vaultwarden:
+    container_name: bitwarden-rs
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    ports:
+      - ${BITWARDEN_APP_PORT}:80
+    volumes:
+      - ./data:/data
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

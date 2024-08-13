@@ -1,0 +1,20 @@
+# FROM https://docs.portainer.io/
+version: "3.8"
+services:
+  portainer-ce:
+    container_name: portainer-ce
+    image: portainer/portainer-ce:latest
+    restart: unless-stopped
+    ports:
+      - ${PORTAINER_APP_PORT}:9000
+      - ${PORTAINER_API_PORT}:8000
+    volumes:
+      - ./data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

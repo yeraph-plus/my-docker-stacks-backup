@@ -1,0 +1,29 @@
+# FROM https://calibre-ebook.com/
+# FROM https://hub.docker.com/r/linuxserver/calibre
+version: "3.8"
+services:
+  calibre:
+    container_name: calibre
+    image: linuxserver/calibre:latest
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined #Syscalls to Docker.
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      - PASSWORD=${CALIBRE_GUI_PASSWORD}
+      - CLI_ARGS=${CALIBRE_CLI_ARGS}
+    volumes:
+      - ./data/config:/config
+    ports:
+      - ${CALIBRE_APP_PORT}:8080
+      - ${CALIBRE_APP_PORT_HTTPS}:8181
+      - ${CALIBRE_WEBSERVER_GUI_PORT}:8081
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

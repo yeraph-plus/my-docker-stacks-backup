@@ -1,0 +1,29 @@
+# FROM https://www.qbittorrent.org/
+# FROM https://hub.docker.com/r/linuxserver/qbittorrent
+version: "3.8"
+services:
+  qbittorrent:
+    container_name: qbittorrent
+    image: linuxserver/qbittorrent:latest
+    restart: unless-stopped
+    ports:
+      - ${QBIT_APP_PORT}:${QBIT_APP_PORT}
+      - ${QBIT_TORRENTING_PORT}:${QBIT_TORRENTING_PORT}
+      - ${QBIT_TORRENTING_PORT}:${QBIT_TORRENTING_PORT}/udp
+    volumes:
+      - ./data/config:/config
+      - ${QBIT_DOWNLOAD_DIR}:/downloads
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=022
+      - TZ=Asia/Shanghai
+      - WEBUI_PORT=${QBIT_APP_PORT}
+      - TORRENTING_PORT=${QBIT_TORRENTING_PORT}
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

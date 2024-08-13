@@ -1,0 +1,32 @@
+# FROM https://hub.docker.com/r/joyqi/typecho
+services:
+  typecho:
+    container_name: typecho
+    image: joyqi/typecho:1.2.1-php8.0-apache
+    restart: unless-stopped
+    ports:
+      - ${TYPECHO_APP_PORT}:80
+    volumes:
+      - ./data:/app
+    environment:
+      - TIMEZONE=Asia/Shanghai
+      - MEMORY_LIMIT=128M
+      - MAX_POST_BODY=50M
+      - TYPECHO_INSTALL=0
+      - TYPECHO_DB_ADAPTER=Pdo_Pgsql
+      - TYPECHO_DB_HOST=postgres
+      - TYPECHO_DB_PORT=5432
+      - TYPECHO_DB_DATABASE=${PGSQL_DB_DATABASE}
+      - TYPECHO_DB_USER=${PGSQL_DB_USER}
+      - TYPECHO_DB_PASSWORD=${PGSQL_DB_PASSWORD}
+      - TYPECHO_USER_NAME=${TYPECHO_USER_NAME}
+      - TYPECHO_USER_PASSWORD=${TYPECHO_USER_PASSWORD}
+      - TYPECHO_USER_MAIL=${TYPECHO_USER_MAIL}
+      - TYPECHO_SITE_URL=${TYPECHO_EXTERNAL_URL}
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

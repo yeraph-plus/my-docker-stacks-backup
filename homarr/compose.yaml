@@ -1,0 +1,24 @@
+# FROM https://github.com/ajnart/homarr
+version: "3.8"
+services:
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    ports:
+      - 80:7575
+    volumes:
+      - ./data/configs:/app/data/configs
+      - ./data/icons:/app/public/icons
+    environment:
+      - PUID=1000
+      - PGID=100
+      - TZ=Asia/Shanghai
+      - PASSWORD=${HOMARR_PASSWORD}
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

@@ -1,0 +1,24 @@
+# FROM https://komga.org/
+version: "3.8"
+services:
+  komga:
+    container_name: komga
+    image: ghcr.io/gotson/komga:latest
+    restart: unless-stopped
+    ports:
+      - ${KOMGA_APP_PORT}:25600
+    user: 1000:1000
+    volumes:
+      - ./data/config:/config
+      - ${KOMGA_MANGA_DIR}:/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

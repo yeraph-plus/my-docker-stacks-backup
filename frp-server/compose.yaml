@@ -1,0 +1,11 @@
+# FROM https://github.com/fatedier/frp
+services:
+  frps:
+    image: snowdreamtech/frps
+    container_name: frp-server
+    restart: always
+    network_mode: host
+    volumes:
+      - ./data/frps.toml:/etc/frp/frps.toml
+      - ./data/ssl:/etc/frp/ssl
+networks: {}

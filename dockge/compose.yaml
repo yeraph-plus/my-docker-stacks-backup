@@ -1,0 +1,22 @@
+# FROM https://github.com/louislam/dockge
+version: "3.8"
+services:
+  dockge:
+    container_name: dockge-stacks
+    image: louislam/dockge:1
+    restart: unless-stopped
+    ports:
+      - ${DOCKGE_APP_PORT}:5001
+    volumes:
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKGE_STACKS_DIR}:${DOCKGE_STACKS_DIR}
+    environment:
+      - DOCKGE_STACKS_DIR=${DOCKGE_STACKS_DIR}
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

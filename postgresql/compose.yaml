@@ -1,0 +1,47 @@
+# FROM https://hub.docker.com/_/postgres
+version: "3.9"
+services:
+  postgres:
+    container_name: postgresql
+    image: postgres:16.3-alpine
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_USER=${PGSQL_ROOT_USER}
+      - POSTGRES_PASSWORD=${PGSQL_ROOT_PASSWORD}
+    ports:
+      - 5432:5432 #PGSQL PORT
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - -h
+        - 127.0.0.1
+        - -p
+        - "5432"
+        - -q
+        - -U
+        - ${PGSQL_ROOT_USER}
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+  adminer:
+    container_name: adminer
+    image: adminer:4.8.1-standalone
+    restart: always
+    ports:
+      - ${PGSQL_ADMINER_PORT}:8080
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

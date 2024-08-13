@@ -1,0 +1,28 @@
+# FROM https://syncthing.net/
+# FROM https://hub.docker.com/r/linuxserver/syncthing
+version: "3.8"
+services:
+  syncthing:
+    container_name: syncthing
+    image: linuxserver/syncthing:latest
+    restart: unless-stopped
+    ports:
+      - ${SYNCTHING_APP_PORT}:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp #Protocol
+    hostname: ${SYNCTHING_HOSTNAME}
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/config:/config
+      - ${SYNCTHING_SYNC_DIR}:/data
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

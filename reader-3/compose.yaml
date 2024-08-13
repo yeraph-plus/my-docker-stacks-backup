@@ -1,0 +1,26 @@
+# FROM https://github.com/hectorqin/reader
+version: "3.8"
+services:
+  reader:
+    container_name: reader
+    image: hectorqin/reader:latest
+    restart: unless-stopped
+    ports:
+      - ${READER_APP_PORT}:8080
+    volumes:
+      - ./data/logs:/logs
+      - ./data/storage:/storage
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - READER_APP_USERLIMIT=${READER_USERLIMIT}
+      - READER_APP_USERBOOKLIMIT=${READER_USERBOOKLIMIT}
+      - READER_APP_CACHECHAPTERCONTENT=${READER_CACHECONTENT}
+      - READER_APP_SECURE=${READER_SECURE}
+      - READER_APP_SECUREKEY=${READER_SECUREKEY}
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

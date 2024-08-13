@@ -1,0 +1,19 @@
+# FROM https://github.com/AlisaAkiron/mcsmanager-image
+version: "3"
+services:
+  mcsm-daemon:
+    container_name: mcsmanager-daemon
+    image: alisaqaq/mcsmanager-daemon:latest
+    restart: unless-stopped
+    ports:
+      - 24444:24444
+    volumes:
+      - ./data:/opt/mcsmanager/daemon/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      createdBy: Apps
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true
