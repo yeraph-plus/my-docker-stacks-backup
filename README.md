@@ -9,6 +9,9 @@ PS：因为都是一些我日常在用/偶尔会玩的应用，所以很多端�
 一些脚本：
 
 `init_debian_sources.sh` 一键配置 Debian 软件源为 tuna 镜像
+
 `init_docker.sh` 一键使用 tuna 镜像源安装 DockerCE 和相关组件
+
 `init_docker_mirror.sh` 一键配置 DockerHub 加速镜像
+
 `init_openmediavault_sources.sh` 一键配置 OpenMediaVault 软件源为 tuna 镜像，并自动安装 omv-extras 。
