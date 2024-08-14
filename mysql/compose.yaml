@@ -1,7 +1,7 @@
 # FROM https://hub.docker.com/_/mysql
 version: "3.1"
 services:
-  mysql:
+  db:
     container_name: mysql
     image: mysql:8
     restart: always

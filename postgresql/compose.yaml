@@ -1,7 +1,7 @@
 # FROM https://hub.docker.com/_/postgres
 version: "3.9"
 services:
-  postgres:
+  db:
     container_name: postgresql
     image: postgres:16.3-alpine
     restart: always
