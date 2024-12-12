@@ -1,0 +1,81 @@
+# FROM https://rsshub.netlify.app/zh/install
+
+services:
+  rsshub:
+    container_name: rsshub-app
+    image: diygod/rsshub:2024-12-11
+    restart: unless-stopped
+    ports:
+      - ${RSSHUB_APP_PORT}:1200
+    depends_on:
+      - browserless
+      # - redis
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PUPPETEER_WS_ENDPOINT=ws://browserless:3000
+      - PORT=1200
+      - LISTEN_INADDR_ANY=1
+      - REQUEST_RETRY=2
+      - REQUEST_TIMEOUT=3000
+      - ALLOW_ORIGIN=*
+      - CACHE_CONTENT_EXPIRE=360
+      - CACHE_EXPIRE=300
+      - MEMORY_MAX=256
+      - LOGGER_LEVEL=info
+      - NO_LOGFILES=false
+      - DISALLOW_ROBOT=true
+      - ENABLE_CLUSTER=false
+      - NODE_NAME=rsshub
+      # - CACHE_TYPE=memory
+      # - REDIS_URL=redis://0.0.0.0:6379/
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:1200/healthz?key=${RSSHUB_ACCESS_KEY}
+      timeout: 10s
+    networks:
+      - rsshub_network
+  browserless:
+    container_name: rsshub-browserless
+    image: browserless/chrome
+    restart: unless-stopped
+    expose:
+      - 3000
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:3000/pressure
+      timeout: 10s
+    ulimits:
+      core:
+        hard: 0
+        soft: 0
+    networks:
+      - rsshub_network
+#  redis:
+#    image: redis:alpine
+#    restart: unless-stopped
+#    volumes:
+#        - ./redis:/data
+#    healthcheck:
+#        test: ["CMD", "redis-cli", "ping"]
+#        interval: 30s
+#        timeout: 10s
+#        retries: 5
+#        start_period: 5s
+#    networks:
+#      - rsshub_network
+networks:
+  rsshub_network:
+    name: rsshub_network
+    external: true

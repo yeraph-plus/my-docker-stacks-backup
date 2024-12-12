@@ -1,0 +1,24 @@
+# FROM https://hub.docker.com/r/joyqi/typecho
+
+services:
+  typecho:
+    container_name: typecho
+    image: joyqi/typecho:1.2.1-php8.0-apache
+    restart: unless-stopped
+    ports:
+      - ${TYPECHO_APP_PORT}:80
+    volumes:
+      - ./data:/app
+    environment:
+      - TIMEZONE=Asia/Shanghai
+      - MEMORY_LIMIT=64M
+      - MAX_POST_BODY=10M
+      - TYPECHO_INSTALL=1
+      - TYPECHO_DB_ADAPTER=SQLite
+      - TYPECHO_DB_FILE=/app/usr/typecho_database.db
+      - TYPECHO_SITE_URL=${TYPECHO_SITE_URL}
+      - TYPECHO_USER_NAME=${TYPECHO_USER_NAME}
+      - TYPECHO_USER_PASSWORD=${TYPECHO_USER_PASSWORD}
+      - TYPECHO_USER_MAIL=${TYPECHO_USER_MAIL}
+    network_mode: bridge
+networks: {}

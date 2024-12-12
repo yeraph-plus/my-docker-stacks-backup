@@ -1,0 +1,23 @@
+# FROM https://hub.docker.com/r/linuxserver/calibre
+
+services:
+  calibre:
+    container_name: calibre
+    image: linuxserver/calibre:latest
+    restart: unless-stopped
+    ports:
+      - ${CALIBRE_APP_PORT}:8080
+      - ${CALIBRE_APP_PORT_HTTPS}:8181
+      - ${CALIBRE_WEBSERVER_GUI_PORT}:8081
+    volumes:
+      - ./config:/config
+    security_opt:
+      - seccomp:unconfined #Syscalls to Docker.
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      - PASSWORD=${CALIBRE_GUI_PASSWORD}
+      - CLI_ARGS=${CALIBRE_CLI_ARGS}
+    network_mode: bridge
+networks: {}

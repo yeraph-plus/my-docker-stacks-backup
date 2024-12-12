@@ -1,0 +1,20 @@
+# FROM https://komga.org/
+
+services:
+  komga:
+    container_name: komga
+    image: ghcr.io/gotson/komga:latest
+    restart: unless-stopped
+    ports:
+      - ${KOMGA_APP_PORT}:25600
+    user: 1000:1000
+    privileged: false
+    volumes:
+      - ./config:/config
+      - ${KOMGA_MANGA_DIR}:/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    network_mode: bridge
+networks: {}

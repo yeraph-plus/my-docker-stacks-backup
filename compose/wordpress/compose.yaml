@@ -1,0 +1,37 @@
+services:
+  wordpress:
+    container_name: wordpress-app
+    image: wordpress-app
+    restart: unless-stopped
+    ports:
+      - ${WP_APP_PORT}:8080
+    environment:
+      WORDPRESS_DB_HOST: wordpress-db
+      WORDPRESS_DB_USER: ${WPDB_NAME}
+      WORDPRESS_DB_PASSWORD: ${WPDB_USER}
+      WORDPRESS_DB_NAME: ${WPDB_PASSWORD}
+    volumes:
+      - ./wwwroot:/var/www/html
+    deploy:
+      resources:
+        reservations:
+          memory: 512M
+    networks:
+      - wordpress_network
+  mariadb:
+    container_name: wordpress-db
+    image: mariadb:10.3
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${WPDB_NAME}
+      MARIADB_USER: ${WPDB_USER}
+      MARIADB_PASSWORD: ${WPDB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${WPDB_ROOT_PASSWORD}
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - wordpress_network
+networks:
+  wordpress_network:
+    name: wordpress_network
+    external: true

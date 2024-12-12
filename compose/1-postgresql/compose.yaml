@@ -1,0 +1,37 @@
+# https://hub.docker.com/_/postgres
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - ${PGSQL_PORT}:5432
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready -U ${PGSQL_USER} -d ${PGSQL_DBNAME}
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: ${PGSQL_USER}
+      POSTGRES_PASSWORD: ${PGSQL_PASSWORD}
+      POSTGRES_DB: ${PGSQL_DBNAME}
+      PGDATA: /var/lib/postgresql/data
+    networks:
+      - app_network
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - ${ADMINER_APP_PORT}:8080
+    networks:
+      - app_network
+networks:
+  app_network:
+    name: app_network
+    external: true

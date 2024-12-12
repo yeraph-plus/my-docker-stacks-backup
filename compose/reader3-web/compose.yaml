@@ -1,0 +1,16 @@
+# FROM https://github.com/hectorqin/reader
+
+services:
+  reader:
+    container_name: reader
+    image: hectorqin/reader:latest
+    restart: unless-stopped
+    ports:
+      - ${READER_APP_PORT}:8080
+    env_file:
+      - .env
+    volumes:
+      - ./data/logs:/logs
+      - ./data/storage:/storage
+    network_mode: bridge
+networks: {}

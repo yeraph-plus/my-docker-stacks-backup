@@ -1,0 +1,12 @@
+# FROM https://github.com/usememos/memos
+
+services:
+  memos:
+    container_name: memos
+    image: neosmemo/memos:latest
+    restart: unless-stopped
+    ports:
+      - ${MEMOS_APP_PORT}:5230
+    volumes:
+      - ./memos:/var/opt/memos
+    network_mode: bridge

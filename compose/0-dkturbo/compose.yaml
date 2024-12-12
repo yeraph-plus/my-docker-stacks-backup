@@ -1,0 +1,21 @@
+# https://github.com/Cp0204/CasaOS-AppStore-Play/tree/main/Apps/0-dkturbo
+
+services:
+  dkturbo:
+    container_name: dkturbo
+    image: registry.cn-shenzhen.aliyuncs.com/cp0204/dkturbo:main
+    restart: unless-stopped
+    pid: host
+    privileged: true
+    volumes:
+      - /etc/docker:/etc/docker
+      - /opt:/opt
+    environment:
+      - MODE=registry
+      - REGISTRY=auto
+    network_mode: bridge
+    deploy:
+      resources:
+        reservations:
+          memory: 8M
+networks: {}

@@ -1,0 +1,30 @@
+# FROM https://github.com/0xJacky/nginx-ui
+
+services:
+  nginx-ui:
+    container_name: nginx-ui
+    image: uozi/nginx-ui:v2.0.0-beta.39
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Shanghai
+      - NGINX_UI_SERVER_HTTP_HOST=0.0.0.0
+      - NGINX_UI_SERVER_HTTP_PORT=9000
+      - NGINX_UI_SERVER_RUN_MODE=release
+      - NGINX_UI_SERVER_HTTP_CHALLENGE_PORT=9180
+      - NGINX_UI_SERVER_DATABASE=database
+      - NGINX_UI_SERVER_START_CMD=login
+      - NGINX_UI_SERVER_START_CMD=database
+      - NGINX_UI_SERVER_PAGE_SIZE=10
+      - NGINX_UI_SERVER_CERT_RENEWAL_INTERVAL=7
+      - NGINX_UI_SERVER_SKIP_INSTALLATION=true
+    ports:
+      - ${NGINXUI_PORT_HTTP}:80
+      - ${NGINXUI_PORT_HTTPS}:443
+    stdin_open: true
+    volumes:
+      - ${NGINXUI_ROOT_PATH}/nginx:/etc/nginx
+      - ${NGINXUI_ROOT_PATH}/nginx-ui:/etc/nginx-ui
+      - ${NGINXUI_ROOT_PATH}/www:/var/www
+networks: {}

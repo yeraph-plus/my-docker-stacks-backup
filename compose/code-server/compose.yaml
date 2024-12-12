@@ -1,0 +1,21 @@
+# FROM https://hub.docker.com/r/linuxserver/code-server
+
+services:
+  code-server:
+    container_name: code-server
+    image: linuxserver/code-server:latest
+    restart: unless-stopped
+    ports:
+      - ${CODESERVER_APP_PORT}:8443
+    volumes:
+      - ./data:/config
+      - ${CODESERVER_WORKSPACE_DIR}:/config/workspace
+    environment:
+      - DEFAULT_WORKSPACE=/config/workspace
+      - PASSWORD=${CODESERVER_WEB_PASS}
+      - SUDO_PASSWORD=${CODESERVER_SUDO_PASS}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    network_mode: bridge
+networks: {}

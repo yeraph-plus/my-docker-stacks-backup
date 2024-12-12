@@ -1,0 +1,18 @@
+# FROM https://www.audiobookshelf.org/docs
+
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    restart: unless-stopped
+    ports:
+      - ${AUDIOBOOK_APP_PORT}:80
+    volumes:
+      - ./config:/config
+      - ./metadata:/metadata
+      - ${AUDIOBOOK_BOOK_DIR}:/audiobooks
+      - ${AUDIOBOOK_PODCASTS_DIR}:/podcasts
+    environment:
+      - TZ=Asia/Shanghai
+    network_mode: bridge
+networks: {}

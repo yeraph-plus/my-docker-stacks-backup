@@ -1,0 +1,17 @@
+# FROM https://github.com/gotify/server
+
+services:
+  gotify:
+    container_name: gotify
+    image: gotify/server:latest
+    restart: unless-stopped
+    ports:
+      - 86:80
+    volumes:
+      - ./data:/app/data
+    deploy:
+      resources:
+        reservations:
+          memory: 16M
+    network_mode: bridge
+networks: {}

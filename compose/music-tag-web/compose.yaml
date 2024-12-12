@@ -1,0 +1,15 @@
+# FROM https://github.com/xhongc/music-tag-web
+
+services:
+  music-tag-web:
+    container_name: music-tag-web
+    image: xhongc/music_tag_web:latest
+    restart: unless-stopped
+    ports:
+      - ${MUSICTAG_APP_PORT}:8001
+    volumes:
+      - ./config:/app/data
+      - ${MUSIC_TAG_DIR}:/app/media
+    command: /start
+    network_mode: bridge
+networks: {}

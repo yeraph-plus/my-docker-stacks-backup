@@ -1,0 +1,26 @@
+# FROM https://github.com/shinsenter/php
+
+services:
+  php-nginx:
+    container_name: php-nginx
+    image: shinsenter/php:8.4-fpm-nginx
+    restart: unless-stopped
+    ports: 
+      - 8080:80
+      - 8443:443
+      - 8443:443/udp
+    environment:
+      TZ: "Asia/Shanghai"
+      PGID: "1000"
+      PUID: "1000"
+      DEBUG: "1"
+      HOME: /root
+      WEBHOME: /var/www/html
+      PHP_DISPLAY_ERRORS: "1"
+      PHP_POST_MAX_SIZE: "100M"
+      PHP_UPLOAD_MAX_FILESIZE: "100M"
+      PHP_SESSION_COOKIE_HTTPONLY: "1"
+    volumes:
+      - ./wwwroot:/var/www/html
+      - ./certs:/etc/ssl/web
+    network_mode: bridge

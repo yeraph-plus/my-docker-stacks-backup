@@ -1,0 +1,17 @@
+services:
+  v2raya:
+    container_name: v2raya
+    image: mzz2017/v2raya:latest
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./etc/resolv.conf:/etc/resolv.conf
+      - ./etc/v2raya:/etc/v2raya
+      - ./lib/modules:/lib/modules
+    environment:
+      V2RAYA_ADDRESS: 0.0.0.0:2017
+    deploy:
+      resources:
+        reservations:
+          memory: "128M"

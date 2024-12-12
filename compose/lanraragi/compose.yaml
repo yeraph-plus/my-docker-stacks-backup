@@ -1,0 +1,17 @@
+# FROM https://github.com/Difegue/LANraragi
+
+services:
+  lanraragi:
+    container_name: lanraragi
+    image: difegue/lanraragi
+    restart: unless-stopped
+    privileged: false
+    ports:
+      - 3000:3000
+    volumes:
+      - ./lib:/home/koyomi/lanraragi/lib
+      - ./thumb:/home/koyomi/lanraragi/thumb
+      - ./content:/home/koyomi/lanraragi/content
+      - ./database:/home/koyomi/lanraragi/database
+    network_mode: bridge
+networks: {}

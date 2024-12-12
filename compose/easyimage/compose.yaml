@@ -1,0 +1,18 @@
+# FROM https://github.com/icret/EasyImages2.0
+services:
+  easyimage:
+    container_name: easyimage
+    image: ddsderek/easyimage:latest
+    restart: unless-stopped
+    ports:
+      - ${EASYIMAGE_APP_PORT}:80
+    volumes:
+      - ./config:/app/web/config
+      - ./i:/app/web/i
+    environment:
+      TZ: Asia/Shanghai
+      PUID: 1000
+      PGID: 1000
+      DEBUG: false
+    network_mode: bridge
+networks: {}

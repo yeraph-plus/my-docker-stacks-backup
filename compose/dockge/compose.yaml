@@ -1,0 +1,18 @@
+# FROM https://dockge.kuma.pet/
+
+services:
+  dockge:
+    container_name: dockge-stack
+    image: louislam/dockge:1
+    restart: unless-stopped
+    ports:
+      - ${DOCKGE_APP_PORT}:5001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - ${DOCKGE_STACK_PATH}:${DOCKGE_STACK_PATH}
+    environment:
+      # Tell Dockge where to find the stacks
+      - DOCKGE_STACKS_DIR=${DOCKGE_STACK_PATH}
+    network_mode: bridge
+networks: {}

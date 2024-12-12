@@ -1,0 +1,84 @@
+# FROM https://docs.affine.pro/docs/self-host-affine
+
+services:
+  affine:
+    container_name: affine-app
+    image: ghcr.io/toeverything/affine-graphql:stable
+    restart: unless-stopped
+    command:
+      - sh
+      - -c
+      - node ./scripts/self-host-predeploy && node ./dist/index.js
+    ports:
+      - ${AFFINE_APP_PORT}:3010
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./config:/root/.affine/config
+      - ./storage:/root/.affine/storage
+    logging:
+      driver: json-file
+      options:
+        max-size: 1000m
+    environment:
+      - NODE_OPTIONS="--import=./scripts/register.js"
+      - AFFINE_CONFIG_PATH=/root/.affine/config
+      - REDIS_SERVER_HOST=redis
+      - DATABASE_URL=postgres://${AFFINE_PGSQL_USER}:${AFFINE_PGSQL_PASSWORD}@postgres:5432/${AFFINE_PGSQL_DB}
+      - NODE_ENV=production
+      # - AFFINE_ADMIN_EMAIL=affine@acme.sh
+      # - AFFINE_ADMIN_PASSWORD=affine
+      # Telemetry allows us to collect data on how you use the affine. This data will helps us improve the app and provide better features.
+      # Uncomment next line if you wish to quit telemetry.
+      # - TELEMETRY_ENABLE=false
+    deploy:
+      resources:
+        reservations:
+          memory: 1024M
+    networks:
+      - affine_network
+  redis:
+    container_name: affine-redis
+    image: redis:latest
+    restart: unless-stopped
+    volumes:
+      - ./redis:/data
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - --raw
+        - incr
+        - ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - affine_network
+  postgres:
+    container_name: affine-sql
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U affine
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: ${AFFINE_PGSQL_USER}
+      POSTGRES_PASSWORD: ${AFFINE_PGSQL_PASSWORD}
+      POSTGRES_DB: ${AFFINE_PGSQL_DB}
+      PGDATA: /var/lib/postgresql/data
+    networks:
+      - affine_network
+networks:
+  affine_network:
+    name: affine_network
+    external: true

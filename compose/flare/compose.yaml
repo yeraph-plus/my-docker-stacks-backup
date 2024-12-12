@@ -1,0 +1,12 @@
+# FROM https://github.com/soulteary/docker-flare
+services:
+  flare:
+    container_name: flare
+    image: soulteary/flare:latest
+    restart: unless-stopped
+    ports:
+      - 80:5005
+    volumes:
+      - ./app:/app
+    network_mode: bridge
+networks: {}

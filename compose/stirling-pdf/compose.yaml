@@ -1,0 +1,25 @@
+# FROM https://github.com/Stirling-Tools/Stirling-PDF
+
+services:
+  stirling-pdf:
+    container_name: stirling-pdf
+    image: frooodle/s-pdf:latest
+    restart: unless-stopped
+    ports:
+      - target: 8080
+        published: "8081"
+        protocol: tcp
+    volumes:
+      - ./data:/usr/share/tessdata
+      - ./configs:/configs
+      - ./files:/customFiles
+      - ./logs:/logs
+    environment:
+      - DOCKER_ENABLE_SECURITY=false
+      - SECURITY_ENABLE_LOGIN=true
+      - SECURITY_INITIALLOGIN_USERNAME=admin
+      - SECURITY_INITIALLOGIN_PASSWORD=stirling
+      - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+      - LANGS=zh_CN
+    network_mode: bridge
+networks: {}

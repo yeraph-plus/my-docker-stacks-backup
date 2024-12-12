@@ -1,0 +1,21 @@
+# FROM https://hub.docker.com/r/linuxserver/booksonic-air
+
+services:
+  booksonic-air:
+    container_name: booksonic-air
+    image: linuxserver/booksonic-air:latest
+    restart: unless-stopped
+    ports:
+      - ${BOOKSONIC_APP_PORT}:4040
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      # - CONTEXT_PATH=url-base
+    volumes:
+      - ./data/config:/config
+      - ${BOOKSONIC_BOOK_DIR}:/audiobooks
+      - ${BOOKSONIC_PODCASTS_DIR}:/podcasts
+      - ${BOOKSONIC_MEDIA_DIR}:/othermedia
+    network_mode: bridge
+networks: {}

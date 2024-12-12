@@ -1,0 +1,27 @@
+services:
+  dpanel:
+    container_name: dpanel
+    image: dpanel/dpanel:lite
+    restart: unless-stopped
+    ports:
+      - 9000:8080
+    environment:
+      APP_NAME: dpanel
+      #INSTALL_USERNAME: admin
+      #INSTALL_PASSWORD: admin
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./:/dpanel
+    network_mode: bridge
+  dpanel-plugin-explorer:
+    container_name: dpanel-plugin-explorer
+    image: alpine:latest
+    restart: unless-stopped
+    privileged: true #EXEC
+    pid: host
+    command:
+      - tail
+      - -f
+      - /dev/null
+    network_mode: bridge
+networks: {}

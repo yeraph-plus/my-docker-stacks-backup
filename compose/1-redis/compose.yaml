@@ -1,0 +1,27 @@
+services:
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    volumes:
+        - ./data:/data
+        - ./logs:/logs
+        # - ./conf/redis.conf:/etc/redis/redis.conf
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - --raw
+        - incr
+        - ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
+networks:
+  app_network:
+    name: app_network
+    external: true

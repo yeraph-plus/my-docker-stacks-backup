@@ -1,0 +1,40 @@
+# https://hub.docker.com/_/mariadb
+# https://hub.docker.com/_/phpmyadmin
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      # MARIADB_DATABASE: ${MARIADB_DATABASE}
+      # MARIADB_USER: ${MARIADB_USER}
+      # MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - ./config:/etc/mysql/conf.d
+      - ./data:/var/lib/mysql
+    deploy:
+      resources:
+        reservations:
+          # cpus: 1
+          memory: 256M
+    networks:
+      - app_network
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: unless-stopped
+    ports:
+      - ${PMA_APP_PORT}:80
+    environment:
+      PMA_ARBITRARY: 1
+      # PMA_HOST: localhost:3306
+      # PMA_USER: ${MARIADB_USER}
+      # PMA_PASSWORD: ${MARIADB_PASSWORD}
+    networks:
+      - app_network
+networks:
+  app_network:
+    name: app_network
+    external: true

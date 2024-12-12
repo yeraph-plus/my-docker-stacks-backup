@@ -1,0 +1,19 @@
+# FROM https://alistgo.com/
+
+services:
+  alist:
+    image: xhofe/alist:latest
+    # image: xhofe/alist-aria2:latest
+    container_name: alist
+    restart: unless-stopped
+    ports:
+      - ${ALIST_APP_PORT}:5244
+    volumes:
+      - ./config:/opt/alist/data
+      - ./data:/mnt/data
+    network_mode: bridge
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+networks: {}

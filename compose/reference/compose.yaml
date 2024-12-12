@@ -1,0 +1,11 @@
+# FROM https://github.com/jaywcjlove/reference
+
+services:
+  reference:
+    container_name: reference
+    image: wcjiang/reference:latest
+    restart: unless-stopped
+    ports:
+      - ${ITREFER_APP_PORT}:3000
+    network_mode: bridge
+networks: {}
